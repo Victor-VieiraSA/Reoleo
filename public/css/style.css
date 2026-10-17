@@ -1,0 +1,16 @@
+:root {
+    --verde-tag: #A4F1B2;
+    --verde-escuro: #005C55;
+    --fundo: #F2F3FF;
+    --texto: #3E4947;
+    --titulo: #131B2E;
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+/* Header */
