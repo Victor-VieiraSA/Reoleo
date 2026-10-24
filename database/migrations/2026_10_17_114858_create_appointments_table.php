@@ -14,7 +14,8 @@ return new class extends Migration
             $table->foreignId('provider_id')->constrained('users')->onDelete('cascade');
             $table->dateTime('appointment_date');
             $table->string('location');
-            $table->enum('status', ['Agendado', 'Concluido', 'Cancelado'])->default('Agendado'); 
+            $table->string('status')->default('Agendado');
+            $table->decimal('oil_estimate', 8, 2);
             $table->timestamps();
         });
     }

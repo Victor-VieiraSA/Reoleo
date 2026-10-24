@@ -17,6 +17,7 @@ class User extends Authenticatable
         'password',
         'cnpj',
         'role',
+        'address',
     ];
 
     // Oculta campos sensíveis ao retornar os dados em JSON (na API)

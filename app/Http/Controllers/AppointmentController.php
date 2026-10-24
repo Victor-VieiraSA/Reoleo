@@ -24,9 +24,9 @@ class AppointmentController extends Controller
             'appointment_date' => 'required|date',
             'location' => 'required|string|max:255',
             'status' => 'sometimes|in:Agendado,Concluido,Cancelado',
+            'oil_estimate' => 'required|numeric|min:0', // <-- DEVE ESTAR ASSIM
         ]);
 
-        // Define "Agendado" como padrão caso o status não seja enviado (reserva confirmada automaticamente)
         if (!isset($validatedData['status'])) {
             $validatedData['status'] = 'Agendado';
         }
@@ -51,6 +51,7 @@ class AppointmentController extends Controller
             'appointment_date' => 'sometimes|date',
             'location' => 'sometimes|string|max:255',
             'status' => 'sometimes|in:Agendado,Concluido,Cancelado',
+            'oil_estimate' => 'required|numeric|min:0'
         ]);
 
         $appointment->update($validatedData);

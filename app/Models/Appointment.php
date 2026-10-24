@@ -16,6 +16,7 @@ class Appointment extends Model
         'appointment_date',
         'location',
         'status',
+        'oil_estimate', // <-- NOVO CAMPO
     ];
 
     // Relacionamento: O agendamento pertence a um Cliente (Usuário de Descarte)

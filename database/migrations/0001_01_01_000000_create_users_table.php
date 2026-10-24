@@ -15,12 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('cnpj')->nullable(); // Preenchido para as empresas
-            $table->enum('role', ['Admin', 'Usuario_Descarte', 'Empresa_Coleta']);
-            $table->timestamps(); // Cria 'created_at' (Data de Inscrição) e 'updated_at'
+            $table->string('cnpj')->nullable();
+            $table->string('role');
+            $table->string('address')->nullable(); // <-- NOVO CAMPO
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

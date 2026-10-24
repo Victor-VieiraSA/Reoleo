@@ -21,6 +21,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'cnpj' => 'nullable|string',
             'role' => 'required|in:Admin,Usuario_Descarte,Empresa_Coleta',
+            'address' => 'nullable|string|max:255', // <-- NOVO CAMPO
         ]);
 
         // Criptografa a senha antes de salvar
@@ -44,6 +45,7 @@ class UserController extends Controller
             'password' => 'sometimes|string|min:6',
             'cnpj' => 'nullable|string',
             'role' => 'sometimes|in:Admin,Usuario_Descarte,Empresa_Coleta',
+            'address' => 'nullable|string|max:255', // <-- NOVO CAMPO
         ]);
 
         if (isset($validatedData['password'])) {
