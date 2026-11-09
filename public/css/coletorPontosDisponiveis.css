@@ -1,0 +1,162 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f8;
+    color: #334155;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background-color: #f0f2f9;
+    padding: 1.5rem 1rem;
+    flex-shrink: 0;
+}
+
+.sidebar-brand-title {
+    color: #115e59;
+    font-weight: 800;
+    font-size: 1.25rem;
+    line-height: 1.2;
+}
+
+.sidebar-brand-sub {
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-region {
+    background-color: #e0e7ff;
+    color: #3730a3;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+}
+
+.nav-link-custom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem 1rem;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s;
+}
+
+.nav-link-custom:hover {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+.nav-link-custom.active {
+    background-color: #0d9488;
+    color: #ffffff;
+}
+
+.btn-logout {
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-badge-profile {
+    background-color: #eef2ff;
+    color: #4338ca;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+}
+
+.card-custom {
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.text-teal {
+    color: #0f766e;
+}
+
+.search-box {
+    background-color: #f1f3f9;
+    border-radius: 8px;
+    width: 320px;
+    max-width: 100%;
+}
+
+.search-box input::placeholder {
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+.btn-filtrar {
+    background-color: #e0e7ff;
+    color: #3730a3;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 6px;
+}
+
+.ponto-icon-box {
+    width: 44px;
+    height: 44px;
+    background-color: #e0f2fe;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.info-banner-custom {
+    background-color: #f0f3ff;
+    border-radius: 8px;
+}
+
+.btn-aceitar {
+    background-color: #0f766e;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    padding: 0.5rem 1.1rem;
+    border: none;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    width: auto;
+}
+
+.btn-aceitar:hover {
+    background-color: #115e59;
+    color: #ffffff;
+}
+
+.extra-small {
+    font-size: 0.725rem;
+}
+
+@media (max-width: 575.98px) {
+    .offcanvas {
+        background-color: #f0f2f9;
+        width: 280px;
+    }
+    .search-box {
+        width: 100%;
+    }
+    .btn-aceitar, .btn-filtrar {
+        width: 100% !important;
+    }
+}

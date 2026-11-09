@@ -1,0 +1,296 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f8;
+    color: #334155;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background-color: #f0f2f9;
+    padding: 1.5rem 1rem;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.sidebar-brand-title {
+    color: #115e59;
+    font-weight: 800;
+    font-size: 1.25rem;
+    line-height: 1.2;
+}
+
+.sidebar-brand-sub {
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-region {
+    background-color: #e0e7ff;
+    color: #3730a3;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+}
+
+.nav-link-custom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem 1rem;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: 0.25rem;
+    transition: all 0.2s;
+}
+
+.nav-link-custom:hover {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+.nav-link-custom.active {
+    background-color: #0d9488;
+    color: #ffffff;
+}
+
+.btn-logout {
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-badge-profile {
+    background-color: #eef2ff;
+    color: #4338ca;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+}
+
+.card-custom {
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.btn-agendar-disabled {
+    background-color: #99f6e4;
+    color: #0f766e;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.6rem 1.25rem;
+    border: none;
+    opacity: 0.7;
+}
+
+.badge-cnpj {
+    background-color: #86efac;
+    color: #14532d;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.icon-box-green {
+    width: 44px;
+    height: 44px;
+    background-color: #86efac;
+    color: #14532d;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.icon-box-blue {
+    width: 44px;
+    height: 44px;
+    background-color: #0284c7;
+    color: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.text-teal {
+    color: #0d9488;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(243, 244, 248, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 20;
+}
+
+.modal-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    width: 100%;
+    max-width: 520px;
+    padding: 2.25rem;
+    border: 1px solid #f1f5f9;
+}
+
+.font-semibold {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.extra-small {
+    font-size: 0.75rem;
+}
+
+.custom-select {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.custom-select:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+/* Cartão de Turno (Base) */
+.turno-card {
+    border: 1px solid #e2e8f0;
+    background-color: #f1f3f9;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Quando o Radio de um Turno estiver SELECIONADO */
+.turno-card:has(input[type="radio"]:checked) {
+    background-color: #0f766e;
+    border-color: #0f766e;
+}
+
+.turno-card:has(input[type="radio"]:checked) .radio-dot {
+    border: 2px solid #ffffff;
+    background-color: #ffffff;
+    box-shadow: inset 0 0 0 3px #0f766e;
+}
+
+.turno-card:has(input[type="radio"]:checked) .turno-titulo {
+    color: #ffffff !important;
+}
+
+.turno-card:has(input[type="radio"]:checked) .turno-subtitulo {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.turno-card:has(input[type="radio"]:checked) .turno-icone {
+    color: #ffffff !important;
+}
+
+/* Quando o Radio de um Turno NÃO estiver selecionado */
+.turno-card:not(:has(input[type="radio"]:checked)) .radio-dot {
+    border: 2px solid #cbd5e1;
+    background-color: #ffffff;
+    box-shadow: none;
+}
+
+.turno-card:not(:has(input[type="radio"]:checked)) .turno-titulo {
+    color: #1e293b !important;
+}
+
+.turno-card:not(:has(input[type="radio"]:checked)) .turno-subtitulo {
+    color: #64748b !important;
+}
+
+.turno-card:not(:has(input[type="radio"]:checked)) .turno-icone {
+    color: #64748b !important;
+}
+
+.radio-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background-color: #ffffff;
+    box-shadow: inset 0 0 0 3px #0f766e;
+}
+
+.custom-textarea {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: #1e293b;
+    resize: none;
+}
+
+.custom-textarea::placeholder {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.custom-textarea:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+.btn-confirmar {
+    background-color: #0f766e;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.btn-confirmar:hover {
+    background-color: #115e59;
+    color: #ffffff;
+}
+
+.btn-cancelar {
+    color: #475569;
+    font-size: 0.775rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.btn-cancelar:hover {
+    color: #0f172a;
+}
+
+@media (max-width: 767.98px) {
+    .offcanvas {
+        background-color: #f0f2f9;
+        width: 280px;
+    }
+    .modal-card {
+        padding: 1.5rem;
+    }
+}

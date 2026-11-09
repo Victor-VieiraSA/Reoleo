@@ -1,0 +1,135 @@
+
+/* ==============================
+   CABEÇALHO
+============================== */
+
+.login-header {
+    width: 100%;
+    min-height: 88px;
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(20, 30, 50, 0.04);
+}
+
+.login-header a {
+    text-decoration: none;
+}
+
+.login-header-inner {
+    width: min(1300px, calc(100% - 70px));
+    min-height: 88px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.login-brand {
+    display: flex;
+    flex-direction: column;
+    color: #00645d;
+    line-height: 1.2;
+}
+
+.brand-name {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.brand-region {
+    color: #485452;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    margin-top: 3px;
+}
+
+.login-navigation {
+    display: flex;
+    align-items: center;
+    gap: 45px;
+}
+
+.login-navigation a {
+    color: #424b4b;
+    font-size: 15px;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.login-navigation a:hover {
+    color: #00766d;
+}
+
+.header-login-button {
+    background: #00645d;
+    color: #ffffff;
+    padding: 11px 19px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: background 0.2s;
+}
+
+.header-login-button:hover {
+    background: #008276;
+    color: #ffffff;
+}
+
+
+/* ==============================
+   RESPONSIVIDADE DO CABEÇALHO
+============================== */
+
+@media (max-width: 900px) {
+
+    .login-header-inner {
+        width: calc(100% - 40px);
+    }
+
+    .login-navigation {
+        gap: 18px;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .login-header-inner {
+        min-height: 75px;
+        width: calc(100% - 30px);
+        flex-wrap: wrap;
+        padding: 13px 0;
+    }
+
+    .login-header {
+        min-height: 75px;
+    }
+
+    .login-navigation {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #edf0f0;
+    }
+
+    .login-navigation a {
+        font-size: 12px;
+    }
+
+    .header-login-button {
+        font-size: 12px;
+        padding: 9px 12px;
+    }
+
+}
+
+@media (max-width: 380px) {
+
+    .login-navigation a {
+        font-size: 11px;
+    }
+
+}

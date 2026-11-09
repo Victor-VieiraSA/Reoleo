@@ -1,0 +1,56 @@
+.login-footer {
+    width: 100%;
+    background: #f0f1ff;
+    padding: 0;
+    margin-top: auto;
+}
+
+.login-footer-inner {
+    width: min(1300px, calc(100% - 70px));
+    min-height: 70px;
+    margin: auto;
+    border-top: 1px solid #dfe2eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.login-footer-inner > span {
+    color: #46514f;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 22px;
+}
+
+.footer-links a {
+    color: #46514f;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.footer-links a:hover {
+    color: #00766d;
+}
+
+@media (max-width: 650px) {
+
+    .login-footer-inner {
+        width: calc(100% - 35px);
+        padding: 18px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+}
