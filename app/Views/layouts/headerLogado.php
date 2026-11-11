@@ -1,3 +1,4 @@
+
 <header class="login-header">
     <div class="login-header-inner">
 
@@ -11,14 +12,25 @@
 
         <nav class="login-navigation">
             <a href="<?= base_url('/') ?>">Início</a>
-            <a href="<?= base_url('entrar') ?>">Agendar Coleta</a> 
+            <?php if ((usuario_logado()['perfil'] ?? '') === 'coletor_licenciado'): ?>
+                <a href="<?= base_url('coletorPontosDisponiveis') ?>">Coletas Disponíveis</a>
+            <?php else: ?>
+                <a href="<?= base_url('Agendar') ?>">Agendar Coleta</a>
+            <?php endif; ?> 
             <a href="<?= base_url('mapa') ?>">Mapa da Região</a>
         </nav>
 
+        <?php $usuarioHeader = usuario_logado(); ?>
         <div class="d-flex align-items-center gap-2">
-            <a href="<?= base_url('inicioPontoColeta') ?>" class="header-user-badge">
-                <i class="bi bi-person-circle"></i> Olá, <strong>Restaurante Estrela</strong>
+            <a href="<?= base_url(rota_inicial($usuarioHeader['perfil'] ?? null)) ?>" class="header-user-badge">
+                <i class="bi bi-person-circle"></i> Olá, <strong><?= esc($usuarioHeader['razao_social'] ?? 'Visitante') ?></strong>
             </a>
+
+            <form action="<?= base_url('sair') ?>" method="post" class="m-0">
+                <?= csrf_field() ?>
+                <button type="submit" class="header-login-button" style="border: 0; cursor: pointer;">Sair</button>
+            </form>
+        </div>
 
     </div>
 </header>

@@ -102,7 +102,8 @@
                         E gerencie seus agendamentos
                     </p>
 
-                    <form class="reoleo-form" id="login-form">
+                    <form class="reoleo-form" id="login-form" action="<?= base_url('entrar') ?>" method="post">
+                        <?= csrf_field() ?>
 
                         <div class="form-field">
 
@@ -116,7 +117,7 @@
 
                                 <input
                                     type="email"
-                                    id="login-email"
+                                    id="login-email" name="email" value="<?= esc($aba === 'login' ? ($antigo['email'] ?? '') : '') ?>"
                                     placeholder="contato@restaurante.com.br"
                                     autocomplete="email"
                                     required>
@@ -141,7 +142,7 @@
 
                                 <input
                                     type="password"
-                                    id="login-password"
+                                    id="login-password" name="senha"
                                     placeholder="Digite sua senha"
                                     autocomplete="current-password"
                                     required>
@@ -163,7 +164,13 @@
                             <i class="bi bi-arrow-right"></i>
                         </button>
 
-                        <p class="form-feedback" id="login-feedback" role="status" aria-live="polite"></p>
+                        <?php if (! empty($errosLogin)): ?>
+                            <p class="form-feedback visible error" id="login-feedback" role="alert" aria-live="polite"><?= esc(implode(' ', $errosLogin)) ?></p>
+                        <?php elseif (! empty($sucesso)): ?>
+                            <p class="form-feedback visible" id="login-feedback" role="status" aria-live="polite"><?= esc($sucesso) ?></p>
+                        <?php else: ?>
+                            <p class="form-feedback" id="login-feedback" role="status" aria-live="polite"></p>
+                        <?php endif; ?>
 
                     </form>
 
@@ -177,7 +184,8 @@
                         Faça parte da rede sustentável Reoleo
                     </p>
 
-                    <form class="reoleo-form register-form" id="register-form">
+                    <form class="reoleo-form register-form" id="register-form" action="<?= base_url('cadastrar') ?>" method="post">
+                        <?= csrf_field() ?>
 
                         <div class="register-profile-title">
                             Tipo de perfil <span>*</span>
@@ -188,7 +196,7 @@
                             <div class="profile-option">
                                 <input
                                     type="radio"
-                                    name="profile"
+                                    name="perfil"
                                     id="profile-generator"
                                     value="gerador"
                                     checked
@@ -211,7 +219,7 @@
                             <div class="profile-option">
                                 <input
                                     type="radio"
-                                    name="profile"
+                                    name="perfil"
                                     id="profile-collector"
                                     value="coletor"
                                     required>
@@ -244,7 +252,7 @@
 
                                     <input
                                         type="text"
-                                        id="register-name"
+                                        id="register-name" name="razao_social" value="<?= esc($antigo['razao_social'] ?? '') ?>"
                                         placeholder="Digite seu nome ou empresa"
                                         autocomplete="name"
                                         required>
@@ -261,7 +269,7 @@
 
                                     <input
                                         type="text"
-                                        id="register-document"
+                                        id="register-document" name="cpf_cnpj" value="<?= esc($antigo['cpf_cnpj'] ?? '') ?>" inputmode="numeric" maxlength="18"
                                         placeholder="000.000.000-00"
                                         required>
                                 </div>
@@ -277,7 +285,7 @@
 
                                     <input
                                         type="tel"
-                                        id="register-phone"
+                                        id="register-phone" name="telefone" value="<?= esc($antigo['telefone'] ?? '') ?>"
                                         placeholder="(13) 99999-9999"
                                         autocomplete="tel"
                                         required>
@@ -294,7 +302,7 @@
 
                                     <input
                                         type="email"
-                                        id="register-email"
+                                        id="register-email" name="email" value="<?= esc($aba === 'cadastro' ? ($antigo['email'] ?? '') : '') ?>"
                                         placeholder="seuemail@exemplo.com"
                                         autocomplete="email"
                                         required>
@@ -311,7 +319,7 @@
 
                                     <input
                                         type="password"
-                                        id="register-password"
+                                        id="register-password" name="senha" minlength="8" maxlength="72"
                                         placeholder="Crie uma senha"
                                         autocomplete="new-password"
                                         required>
@@ -348,7 +356,7 @@
 
                                         <input
                                             type="text"
-                                            id="register-cep"
+                                            id="register-cep" name="cep" value="<?= esc($antigo['cep'] ?? '') ?>" inputmode="numeric" maxlength="9"
                                             placeholder="00000-000"
                                             required>
                                     </div>
@@ -364,7 +372,7 @@
 
                                         <input
                                             type="text"
-                                            id="register-number"
+                                            id="register-number" name="numero" value="<?= esc($antigo['numero'] ?? '') ?>"
                                             placeholder="Nº"
                                             required>
                                     </div>
@@ -380,7 +388,7 @@
 
                                         <input
                                             type="text"
-                                            id="register-street"
+                                            id="register-street" name="endereco" value="<?= esc($antigo['endereco'] ?? '') ?>"
                                             placeholder="Nome da rua ou avenida"
                                             required>
                                     </div>
@@ -396,7 +404,7 @@
 
                                         <input
                                             type="text"
-                                            id="register-neighborhood"
+                                            id="register-neighborhood" name="bairro" value="<?= esc($antigo['bairro'] ?? '') ?>"
                                             placeholder="Seu bairro"
                                             required>
                                     </div>
@@ -412,7 +420,7 @@
 
                                         <input
                                             type="text"
-                                            id="register-city"
+                                            id="register-city" name="municipio" value="<?= esc($antigo['municipio'] ?? '') ?>"
                                             placeholder="Seu município"
                                             required>
                                     </div>
@@ -424,7 +432,7 @@
                         <div class="register-terms">
                             <input
                                 type="checkbox"
-                                id="register-terms"
+                                id="register-terms" name="termos" value="1"
                                 required>
 
                             <label for="register-terms">
@@ -444,7 +452,15 @@
                             <i class="bi bi-arrow-right"></i>
                         </button>
 
-                        <p class="form-feedback" id="register-feedback" role="status" aria-live="polite"></p>
+                        <?php if (! empty($errosCadastro)): ?>
+                            <div class="form-feedback visible error" id="register-feedback" role="alert" aria-live="polite">
+                                <?php foreach ($errosCadastro as $erro): ?>
+                                    <div><?= esc($erro) ?></div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else: ?>
+                            <p class="form-feedback" id="register-feedback" role="status" aria-live="polite"></p>
+                        <?php endif; ?>
 
                     </form>
 
@@ -550,25 +566,22 @@
 
     updateProfileSelection();
 
-    document.getElementById('login-form').addEventListener('submit', (event) => {
-        event.preventDefault();
+    // Reabre a aba e o perfil escolhido quando o servidor devolve a tela com erros.
+    const abaInicial = <?= json_encode($aba) ?>;
+    const perfilAnterior = <?= json_encode($antigo['perfil'] ?? '') ?>;
 
-        const feedback = document.getElementById('login-feedback');
+    if (perfilAnterior) {
+        const radioPerfil = document.querySelector('input[name="perfil"][value="' + perfilAnterior + '"]');
 
-        feedback.textContent = 'Validação concluída. O login será conectado ao sistema na etapa de integração.';
-        feedback.classList.add('visible');
-        feedback.classList.remove('error');
-    });
+        if (radioPerfil) {
+            radioPerfil.checked = true;
+            updateProfileSelection();
+        }
+    }
 
-    document.getElementById('register-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const feedback = document.getElementById('register-feedback');
-
-        feedback.textContent = 'Validação concluída. O cadastro será conectado ao sistema na etapa de integração.';
-        feedback.classList.add('visible');
-        feedback.classList.remove('error');
-    });
+    if (abaInicial === 'cadastro') {
+        showLoginTab('register');
+    }
 
     document.querySelectorAll('.reoleo-form input').forEach((input) => {
         input.addEventListener('input', () => {

@@ -139,7 +139,7 @@
                 </div>
                 <div class="col-lg-4 institutional-action d-flex flex-wrap gap-2 justify-content-lg-end">
                     <a href="<?= base_url('inicioPontoColeta') ?>" class="btn btn-panel">Acessar Painel <i class="bi bi-grid-1x2"></i></a>
-                    <a href="<?= base_url('/') ?>" class="btn btn-logout-home"><i class="bi bi-box-arrow-left"></i> Encerrar Sessão</a>
+                    <a href="<?= base_url('sair') ?>" class="btn btn-logout-home" <?= atributos_sair() ?>><i class="bi bi-box-arrow-left"></i> Encerrar Sessão</a>
                 </div>
             </div>
             <br>

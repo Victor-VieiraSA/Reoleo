@@ -53,7 +53,7 @@
             </nav>
         </div>
         <div>
-            <a href="<?= base_url('/') ?>" class="btn-logout">
+            <a href="<?= base_url('sair') ?>" class="btn-logout" <?= atributos_sair() ?>>
                 <i class="bi bi-box-arrow-left"></i> Encerrar Sessão
             </a>
         </div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="ps-2">
-            <a href="<?= base_url('/') ?>" class="btn-logout">
+            <a href="<?= base_url('sair') ?>" class="btn-logout" <?= atributos_sair() ?>>
                 <i class="bi bi-box-arrow-left"></i> Encerrar Sessão
             </a>
         </div>
@@ -103,14 +103,26 @@
             </div>
         </div>
 
+        <?php if (! empty($sucesso)): ?>
+        <div class="alert alert-success d-flex align-items-center gap-2 mb-4" role="alert">
+            <i class="bi bi-check-circle-fill"></i> <?= esc($sucesso) ?>
+        </div>
+        <?php endif; ?>
+
+        <?php if (! empty($erro)): ?>
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> <?= esc($erro) ?>
+        </div>
+        <?php endif; ?>
+
         <div class="card-custom p-3 p-md-4 mb-4">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div>
                     <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                        <span class="badge-cnpj">CNPJ 00.000.000/0001-00</span>
-                        <span class="text-muted small">• Vila Mathias, Santos/SP</span>
+                        <span class="badge-cnpj"><?= esc(rotulo_documento(usuario_logado()['cpf_cnpj'] ?? '')) ?> <?= esc(formatar_documento(usuario_logado()['cpf_cnpj'] ?? '')) ?></span>
+                        <span class="text-muted small">• <?= esc(local_usuario()) ?></span>
                     </div>
-                    <h2 class="fw-bold text-dark m-0 fs-3 fs-md-2">Bem-Vindo, Restaurante Estrela</h2>
+                    <h2 class="fw-bold text-dark m-0 fs-3 fs-md-2">Bem-Vindo, <?= esc(usuario_logado()['razao_social'] ?? '') ?></h2>
                 </div>
                 <div>
                     <a href="<?= base_url('Agendar') ?>" class="btn btn-agendar d-flex align-items-center justify-content-center gap-2 text-decoration-none w-100 w-md-auto">
@@ -130,8 +142,8 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-baseline">
-                        <span class="display-4 fw-bold me-2 text-teal">89</span>
-                        <span class="fs-5 fw-bold text-dark">Litros</span>
+                        <span class="display-4 fw-bold me-2 text-teal"><?= number_format((int) $litros, 0, ',', '.') ?></span>
+                        <span class="fs-5 fw-bold text-dark">Litros <small class="text-muted fw-normal extra-small">(estimado)</small></span>
                     </div>
                 </div>
             </div>
@@ -145,7 +157,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-baseline">
-                        <span class="display-4 fw-bold me-2 text-dark">8</span>
+                        <span class="display-4 fw-bold me-2 text-dark"><?= (int) $realizadas ?></span>
                         <span class="fs-5 fw-bold text-dark">Coletas</span>
                     </div>
                 </div>
@@ -155,10 +167,12 @@
         <div class="card-custom overflow-hidden">
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center p-3 p-md-4 gap-2 border-bottom-0">
                 <h5 class="fw-bold m-0 text-dark fs-6 fs-md-5">Histórico e Agendamentos de Coleta</h5>
-                <button class="btn btn-filtrar d-flex align-items-center justify-content-center gap-2 px-3 py-2 align-self-start align-self-sm-auto">
-                    <i class="bi bi-funnel"></i> Filtrar
+                <button type="button" class="btn btn-filtrar d-flex align-items-center justify-content-center gap-2 px-3 py-2 align-self-start align-self-sm-auto" data-bs-toggle="collapse" data-bs-target="#filtroHistorico" aria-expanded="<?= array_filter($filtros) ? 'true' : 'false' ?>" aria-controls="filtroHistorico">
+                    <i class="bi bi-funnel"></i> Filtrar<?= array_filter($filtros) ? ' (' . count(array_filter($filtros)) . ')' : '' ?>
                 </button>
             </div>
+
+            <?= view('partials/filtroHistorico', ['filtros' => $filtros, 'acao' => base_url('inicioPontoColeta')]) ?>
 
             <div class="table-responsive">
                 <table class="table table-custom align-middle text-nowrap">
@@ -172,147 +186,55 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">Hoje, 24 de Out</div>
-                                <div class="text-muted small">Turno Tarde (14h - 17h)</div>
-                            </td>
-                            <td class="fw-semibold text-dark">45 Litros</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-truck text-muted"></i>
-                                    <span class="fw-semibold text-dark">EcoLitoral Coletas</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge-status-pendente">
-                                    <i class="bi bi-circle-fill me-1"></i> Pendente
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <a href="#" class="btn-options dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Opções
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="#">Editar</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Confirmar Agendamento</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-danger fw-semibold small" href="#">Deletar Agendamento</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if (empty($agendamentos)): ?>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-5">
+                                    <?php if (array_filter($filtros)): ?>Nenhum agendamento encontrado com esses filtros. <a href="<?= base_url('inicioPontoColeta') ?>">Limpar filtros</a><?php else: ?>Você ainda não tem coletas agendadas. Clique em <strong>Agendar nova coleta</strong> para começar.<?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
 
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">27 de Out</div>
-                                <div class="text-muted small">Turno Manhã (09h - 12h)</div>
-                            </td>
-                            <td class="fw-semibold text-dark">60 Litros</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-truck text-muted"></i>
-                                    <div>
-                                        <div class="fw-semibold text-dark">BioSantos Logística</div>
+                        <?php foreach ($agendamentos as $ag): ?>
+                            <tr>
+                                <td>
+                                    <div class="fw-bold text-dark"><?= esc(data_curta($ag['data_coleta'])) ?></div>
+                                    <div class="text-muted small"><?= esc(turno_detalhe($ag['turno'])) ?></div>
+                                </td>
+                                <td class="fw-semibold text-dark"><?= esc($ag['volume_estimado']) ?></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <?php if (! empty($ag['coletor_nome'])): ?>
+                                            <i class="bi bi-truck text-muted"></i>
+                                            <span class="fw-semibold text-dark"><?= esc($ag['coletor_nome']) ?></span><?php if ($ag['status'] === 'Pendente'): ?><span class="badge bg-warning-subtle text-warning-emphasis fw-semibold">Solicitou a coleta</span><?php endif; ?>
+                                        <?php else: ?>
+                                            <i class="bi bi-hourglass-split text-muted"></i>
+                                            <span class="text-muted">Aguardando coletor</span>
+                                        <?php endif; ?>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge-status-confirmado">
-                                    <i class="bi bi-circle-fill me-1"></i> Confirmado
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <a href="#" class="btn-options dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Opções
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="#">Editar</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Confirmar Agendamento</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-danger fw-semibold small" href="#">Deletar Agendamento</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">18 de Out</div>
-                                <div class="text-muted small">Entregue às 15:32</div>
-                            </td>
-                            <td class="fw-semibold text-dark">40 Litros</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-patch-check-fill text-success"></i>
-                                    <span class="fw-semibold text-dark">EcoLitoral Coletas</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge-status-concluido">
-                                    <i class="bi bi-circle-fill me-1"></i> Concluído
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <a href="#" class="btn-options dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Opções
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="#">Editar</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Confirmar Agendamento</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-danger fw-semibold small" href="#">Deletar Agendamento</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">11 de Out</div>
-                                <div class="text-muted small">Entregue às 10:14</div>
-                            </td>
-                            <td class="fw-semibold text-dark">55 Litros</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-patch-check-fill text-success"></i>
-                                    <span class="fw-semibold text-dark">Recicla Baixada Ltda</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge-status-concluido">
-                                    <i class="bi bi-circle-fill me-1"></i> Concluído
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <a href="#" class="btn-options dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Opções
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="#">Editar</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Confirmar Agendamento</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-danger fw-semibold small" href="#">Deletar Agendamento</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <span class="<?= esc(classe_status($ag['status'])) ?>">
+                                        <i class="bi bi-circle-fill me-1"></i> <?= esc($ag['status']) ?>
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="dropdown">
+                                        <a href="#" class="btn-options dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Opções
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
+                                            <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
+                                                <span>Opções</span>
+                                                <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
+                                            </li>
+                                            <?php if ($ag['status'] === 'Pendente' && empty($ag['coletor_id'])): ?><li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="<?= base_url('Agendar/editar/' . (int) $ag['id']) ?>">Editar</a></li><?php endif; ?>
+                                            <?php if ($ag['status'] === 'Pendente' && ! empty($ag['coletor_id'])): ?><li><form action="<?= base_url('pontoColeta/aceitar/' . (int) $ag['id']) ?>" method="post" class="m-0"><?= csrf_field() ?><button type="submit" class="dropdown-item py-1 px-3 text-success fw-semibold small">Aceitar Coletor</button></form></li><li><form action="<?= base_url('pontoColeta/recusar/' . (int) $ag['id']) ?>" method="post" class="m-0" onsubmit="return confirm('Recusar este coletor? O agendamento volta para a lista de pontos disponíveis.');"><?= csrf_field() ?><button type="submit" class="dropdown-item py-1 px-3 text-danger fw-semibold small">Recusar Coletor</button></form></li><?php endif; ?>
+                                            <?php if (($ag['status'] === 'Pendente' && empty($ag['coletor_id'])) || $ag['status'] === 'Confirmado'): ?><li><form action="<?= base_url('pontoColeta/excluir/' . (int) $ag['id']) ?>" method="post" class="m-0" onsubmit="return confirm('<?= $ag['status'] === 'Pendente' ? 'Excluir este agendamento?' : 'Cancelar este agendamento? O coletor já havia sido aceito.' ?>');"><?= csrf_field() ?><button type="submit" class="dropdown-item py-1 px-3 text-danger fw-semibold small"><?= $ag['status'] === 'Pendente' ? 'Deletar Agendamento' : 'Cancelar Agendamento' ?></button></form></li><?php elseif ($ag['status'] !== 'Pendente'): ?><li><span class="dropdown-item-text text-muted small px-3">Sem ações disponíveis</span></li><?php endif; ?>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

@@ -52,7 +52,7 @@
                 </nav>
             </div>
             <div>
-                <a href="<?= base_url('/') ?>" class="btn-logout">
+                <a href="<?= base_url('sair') ?>" class="btn-logout" <?= atributos_sair() ?>>
                     <i class="bi bi-box-arrow-left"></i> Encerrar Sessão
                 </a>
             </div>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="ps-2">
-            <a href="<?= base_url('/') ?>" class="btn-logout">
+            <a href="<?= base_url('sair') ?>" class="btn-logout" <?= atributos_sair() ?>>
                 <i class="bi bi-box-arrow-left"></i> Encerrar Sessão
             </a>
         </div>
@@ -106,10 +106,10 @@
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                     <div>
                         <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                            <span class="badge-cnpj">CNPJ 00.000.000/0001-00</span>
-                            <span class="text-muted small">• Vila Mathias, Santos/SP</span>
+                            <span class="badge-cnpj"><?= esc(rotulo_documento(usuario_logado()['cpf_cnpj'] ?? '')) ?> <?= esc(formatar_documento(usuario_logado()['cpf_cnpj'] ?? '')) ?></span>
+                            <span class="text-muted small">• <?= esc(local_usuario()) ?></span>
                         </div>
-                        <h2 class="fw-bold text-dark m-0 fs-3 fs-md-2">Bem-Vindo, Restaurante Estrela</h2>
+                        <h2 class="fw-bold text-dark m-0 fs-3 fs-md-2">Bem-Vindo, <?= esc(usuario_logado()['razao_social'] ?? '') ?></h2>
                     </div>
                     <div>
                         <button class="btn btn-agendar-disabled d-flex align-items-center justify-content-center gap-2 w-100 w-md-auto" disabled>
@@ -153,13 +153,24 @@
 
         <div class="modal-overlay d-flex justify-content-center align-items-center p-3 p-sm-4">
             <div class="modal-card">
-                <form action="" method="post">
+                <form action="<?= esc($acao ?? base_url('Agendar'), 'attr') ?>" method="post">
+                    <?= csrf_field() ?>
+
+                    <?php if (! empty($erros)): ?>
+                        <div class="alert alert-danger py-2 small" role="alert">
+                            <?php foreach ($erros as $erro): ?>
+                                <div><?= esc($erro) ?></div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="mb-4">
                         <label class="form-label font-semibold text-dark mb-2">
                             <i class="bi bi-calendar-event me-1"></i> Data da Coleta <span class="text-teal">*</span>
                         </label>
                         <select class="form-select custom-select" name="data_coleta">
-                            <option value="2026-10-10" selected>Sab. 10/10/2026</option>
+                            <?php foreach ($datas as $data): ?>
+                                <option value="<?= esc($data['valor']) ?>" <?= ($antigo['data_coleta'] ?? '') === $data['valor'] ? 'selected' : '' ?>><?= esc($data['rotulo']) ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 
@@ -171,7 +182,7 @@
                         <div class="row g-2 g-sm-3">
                             <div class="col-12 col-sm-6">
                                 <label class="turno-card d-flex align-items-center justify-content-between p-3 w-100">
-                                    <input type="radio" name="turno" value="manha" checked class="d-none">
+                                    <input type="radio" name="turno" value="manha" <?= ($antigo['turno'] ?? 'manha') === 'manha' ? 'checked' : '' ?> class="d-none">
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="radio-dot"></div>
                                         <div>
@@ -184,7 +195,7 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label class="turno-card d-flex align-items-center justify-content-between p-3 w-100">
-                                    <input type="radio" name="turno" value="tarde" class="d-none">
+                                    <input type="radio" name="turno" value="tarde" <?= ($antigo['turno'] ?? '') === 'tarde' ? 'checked' : '' ?> class="d-none">
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="radio-dot"></div>
                                         <div>
@@ -204,7 +215,9 @@
                             <i class="bi bi-droplet me-1"></i> Volume Estimado <span class="text-teal">*</span>
                         </label>
                         <select class="form-select custom-select" name="volume_estimado">
-                            <option value="20-50" selected>20 a 50 Litros</option>
+                            <?php foreach ($volumes as $valor => $rotulo): ?>
+                                <option value="<?= esc($valor) ?>" <?= ($antigo['volume_estimado'] ?? '20-50') === $valor ? 'selected' : '' ?>><?= esc($rotulo) ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="text-muted extra-small mb-4">Base para alocação do veículo</div>
@@ -216,12 +229,12 @@
                             </label>
                             <span class="text-muted extra-small">Opcional</span>
                         </div>
-                        <textarea class="form-control custom-textarea" name="observacoes" rows="3" placeholder="Ex: Entrada de serviço pelo portão lateral, falar com o encarregado Carlos..."></textarea>
+                        <textarea class="form-control custom-textarea" name="observacoes" rows="3" placeholder="Ex: Entrada de serviço pelo portão lateral, falar com o encarregado Carlos..."><?= esc($antigo['observacoes'] ?? '') ?></textarea>
                     </div>
 
                     <div class="d-flex flex-column align-items-center gap-3">
                         <button type="submit" class="btn btn-confirmar d-flex align-items-center justify-content-center gap-2 w-100">
-                            <i class="bi bi-check-circle"></i> Confirmar Agendamento
+                            <i class="bi bi-check-circle"></i> <?= ! empty($editando) ? 'Salvar alterações' : 'Confirmar Agendamento' ?>
                         </button>
                         <a href="<?= base_url('inicioPontoColeta') ?>" class="btn-cancelar">
                             Cancelar e voltar ao painel</a>

@@ -52,7 +52,7 @@
                 </nav>
             </div>
             <div>
-                <a href="<?= base_url('/') ?>" class="btn-logout">
+                <a href="<?= base_url('sair') ?>" class="btn-logout" <?= atributos_sair() ?>>
                     <i class="bi bi-box-arrow-left"></i> Encerrar Sessão
                 </a>
             </div>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="ps-2">
-            <a href="<?= base_url('/') ?>" class="btn-logout">
+            <a href="<?= base_url('sair') ?>" class="btn-logout" <?= atributos_sair() ?>>
                 <i class="bi bi-box-arrow-left"></i> Encerrar Sessão
             </a>
         </div>
@@ -101,14 +101,25 @@
             </div>
         </div>
 
+        <?php if (! empty($sucesso)): ?>
+        <div class="alert alert-success d-flex align-items-center gap-2 mb-4" role="alert">
+            <i class="bi bi-check-circle-fill"></i> <?= esc($sucesso) ?>
+        </div>
+        <?php endif; ?>
+        <?php if (! empty($erro)): ?>
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> <?= esc($erro) ?>
+        </div>
+        <?php endif; ?>
+
         <div class="card-custom p-3 p-md-4 mb-4">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div>
                     <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                        <span class="badge-cnpj">CNPJ 00.000.000/0001-00</span>
-                        <span class="text-muted small">• Boqueirão, Santos/SP</span>
+                        <span class="badge-cnpj"><?= esc(rotulo_documento(usuario_logado()['cpf_cnpj'] ?? '')) ?> <?= esc(formatar_documento(usuario_logado()['cpf_cnpj'] ?? '')) ?></span>
+                        <span class="text-muted small">• <?= esc(local_usuario()) ?></span>
                     </div>
-                    <h2 class="fw-bold text-dark m-0 fs-3 fs-md-2">Bem-Vindo, BioSantos Logistica</h2>
+                    <h2 class="fw-bold text-dark m-0 fs-3 fs-md-2">Bem-Vindo, <?= esc(usuario_logado()['razao_social'] ?? '') ?></h2>
                 </div>
                 <div>
                     <a href="<?= base_url('coletorPontosDisponiveis') ?>" class="btn btn-agendar d-flex align-items-center justify-content-center gap-2 text-decoration-none w-100 w-md-auto">
@@ -128,9 +139,10 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-baseline">
-                        <span class="display-4 fw-bold me-2 text-teal">50</span>
+                        <span class="display-4 fw-bold me-2 text-teal"><?= number_format((int) $litros, 0, ',', '.') ?></span>
                         <span class="fs-5 fw-bold text-dark">Litros</span>
                     </div>
+                    <div class="text-muted extra-small mt-1">Estimado a partir do volume informado nas coletas concluídas</div>
                 </div>
             </div>
 
@@ -143,7 +155,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-baseline">
-                        <span class="display-4 fw-bold me-2 text-dark">3</span>
+                        <span class="display-4 fw-bold me-2 text-dark"><?= (int) $realizadas ?></span>
                         <span class="fs-5 fw-bold text-dark">Coletas</span>
                     </div>
                 </div>
@@ -153,10 +165,12 @@
         <div class="card-custom overflow-hidden">
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center p-3 p-md-4 gap-2 border-bottom-0">
                 <h5 class="fw-bold m-0 text-dark fs-6 fs-md-5">Histórico e Agendamentos de Coleta</h5>
-                <button class="btn btn-filtrar d-flex align-items-center justify-content-center gap-2 px-3 py-2 align-self-start align-self-sm-auto">
-                    <i class="bi bi-funnel"></i> Filtrar
+                <button type="button" class="btn btn-filtrar d-flex align-items-center justify-content-center gap-2 px-3 py-2 align-self-start align-self-sm-auto" data-bs-toggle="collapse" data-bs-target="#filtroHistorico" aria-expanded="<?= array_filter($filtros) ? 'true' : 'false' ?>" aria-controls="filtroHistorico">
+                    <i class="bi bi-funnel"></i> Filtrar<?= array_filter($filtros) ? ' (' . count(array_filter($filtros)) . ')' : '' ?>
                 </button>
             </div>
+
+            <?= view('partials/filtroHistorico', ['filtros' => $filtros, 'acao' => base_url('inicioColetor')]) ?>
 
             <div class="table-responsive">
                 <table class="table table-custom align-middle text-nowrap">
@@ -171,166 +185,71 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">27 de Out</div>
-                                <div class="text-muted small">Manhã (09h - 12h)</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="ponto-icon-box">
-                                        <i class="bi bi-shop text-teal"></i>
-                                    </div>
-                                    <span class="fw-bold text-dark">Restaurante Estrela</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="fw-semibold text-dark">Av. Ana Costa, 420 - Vila Mathias, Santos</div>
-                                <div class="text-muted extra-small">Acesso carga e descarga pelos fundos</div>
-                            </td>
-                            <td class="fw-bold text-dark">60 Litros</td>
-                            <td>
-                                <span class="badge-status-confirmado">
-                                    <i class="bi bi-circle-fill me-1"></i> Confirmado
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <button class="btn-dots dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="#">Finalizar Coleta</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Ver Detalhes</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-danger fw-semibold small" href="#">Cancelar Agendamento</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if (empty($coletas)): ?>
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-5">
+                                    <?php if (array_filter($filtros)): ?>Nenhuma coleta encontrada com esses filtros. <a href="<?= base_url('inicioColetor') ?>">Limpar filtros</a><?php else: ?>Você ainda não aceitou nenhuma coleta. Veja os <a href="<?= base_url('coletorPontosDisponiveis') ?>">pontos disponíveis</a> para começar.<?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
 
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">28 de Out</div>
-                                <div class="text-muted small">Tarde (14h - 17h)</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="ponto-icon-box">
-                                        <i class="bi bi-shop text-teal"></i>
+                        <?php foreach ($coletas as $c): ?>
+                            <tr>
+                                <td>
+                                    <div class="fw-bold text-dark"><?= esc(data_curta($c['data_coleta'])) ?></div>
+                                    <div class="text-muted small"><?= esc(turno_detalhe($c['turno'])) ?></div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="ponto-icon-box">
+                                            <i class="bi bi-shop text-teal"></i>
+                                        </div>
+                                        <span class="fw-bold text-dark"><?= esc($c['ponto_nome']) ?></span>
                                     </div>
-                                    <span class="fw-bold text-dark">Padaria Gonzaga</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="fw-semibold text-dark">Av. Presidente Wilson, 88 - José Menino, Santos</div>
-                                <div class="text-muted extra-small">Estacionamento frontal livre até 15h</div>
-                            </td>
-                            <td class="fw-bold text-dark">120 Litros</td>
-                            <td>
-                                <span class="badge-status-confirmado">
-                                    <i class="bi bi-circle-fill me-1"></i> Confirmado
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <button class="btn-dots dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="#">Finalizar Coleta</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Ver Detalhes</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-danger fw-semibold small" href="#">Cancelar Agendamento</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">26 de Out</div>
-                                <div class="text-muted small">Manhã (08h - 11h)</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="ponto-icon-box">
-                                        <i class="bi bi-shop text-teal"></i>
-                                    </div>
-                                    <span class="fw-bold text-dark">Cantina do Porto</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="fw-semibold text-dark">Av. Senador Feijó, 210 - Centro, Santos</div>
-                                <div class="text-muted extra-small">Necessário aviso de chegada com 15 min</div>
-                            </td>
-                            <td class="fw-bold text-dark">45 Litros</td>
-                            <td>
-                                <span class="badge-status-pendente">
-                                    <i class="bi bi-circle-fill me-1"></i> Pendente
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <button class="btn-dots dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-success fw-semibold small" href="#">Aceitar Coleta</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Ver Detalhes</a></li>
-                                        <li><a class="dropdown-item py-1 px-3 text-danger fw-semibold small" href="#">Recusar Agendamento</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <div class="fw-bold text-dark">Ontem, 23 de Out</div>
-                                <div class="text-muted small">Concluído às 16h40</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="ponto-icon-box">
-                                        <i class="bi bi-building text-teal"></i>
-                                    </div>
-                                    <span class="fw-bold text-dark">Hotel Parque Balneário</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="fw-semibold text-dark">Av. Ana Costa, 555 - Gonzaga, Santos</div>
-                            </td>
-                            <td class="fw-bold text-success">25 Litros</td>
-                            <td>
-                                <span class="badge-status-concluido">
-                                    <i class="bi bi-circle-fill me-1"></i> Concluído
-                                </span>
-                            </td>
-                            <td class="text-end pe-4">
-                                <div class="dropdown">
-                                    <button class="btn-dots dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
-                                        <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
-                                            <span>Opções</span>
-                                            <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
-                                        </li>
-                                        <li><a class="dropdown-item py-1 px-3 text-primary fw-semibold small" href="#">Ver Comprovante</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold text-dark"><?= esc($c['ponto_endereco'] . ', ' . $c['ponto_numero'] . ' - ' . $c['ponto_bairro'] . ', ' . $c['ponto_municipio']) ?></div>
+                                    <?php if (! empty($c['observacoes'])): ?>
+                                        <div class="text-muted extra-small"><?= esc($c['observacoes']) ?></div>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="fw-bold text-dark"><?= esc($c['volume_estimado']) ?></td>
+                                <td>
+                                    <span class="<?= esc(classe_status($c['status'])) ?>">
+                                        <i class="bi bi-circle-fill me-1"></i> <?= esc($c['status']) ?>
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <?php if (in_array($c['status'], ['Pendente', 'Confirmado'], true)): ?>
+                                        <div class="dropdown">
+                                            <button class="btn-dots dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2 mt-1" style="border-radius: 10px; min-width: 190px;">
+                                                <li class="dropdown-header d-flex justify-content-between align-items-center fw-bold text-dark pb-1 px-3">
+                                                    <span>Opções</span>
+                                                    <span class="text-muted small cursor-pointer" role="button" onclick="bootstrap.Dropdown.getInstance(this.closest('.dropdown').querySelector('.dropdown-toggle')).hide()">X</span>
+                                                </li>
+                                                <li>
+                                                    <form action="<?= base_url('coletor/finalizar/' . (int) $c['id']) ?>" method="post" class="m-0" <?= $c['status'] === 'Confirmado' ? '' : 'hidden' ?>>
+                                                        <?= csrf_field() ?>
+                                                        <button type="submit" class="dropdown-item py-1 px-3 text-success fw-semibold small">Finalizar Coleta</button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <form action="<?= base_url('coletor/liberar/' . (int) $c['id']) ?>" method="post" class="m-0" onsubmit="return confirm('Desistir desta coleta? Ela volta para a lista de pontos disponíveis.');">
+                                                        <?= csrf_field() ?>
+                                                        <button type="submit" class="dropdown-item py-1 px-3 text-danger fw-semibold small"><?= $c['status'] === 'Pendente' ? 'Cancelar Solicitação' : 'Desistir da Coleta' ?></button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    <?php else: ?>
+                                        <span class="text-muted">&mdash;</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
