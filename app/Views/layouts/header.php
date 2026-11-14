@@ -12,8 +12,6 @@
         <nav class="login-navigation">
             <a href="<?= base_url('/') ?>">Início</a>
             <a href="<?= base_url('entrar') ?>">Agendar Coleta</a>
-            <a href="<?= base_url('inicioPontoColeta') ?>">Inicio Ponto Coleta</a>
-            <a href="<?= base_url('inicioColetor') ?>">Inicio Coletor</a>
             <a href="<?= base_url('mapaDeslogado') ?>">Mapa da Região</a>
         </nav>
 
